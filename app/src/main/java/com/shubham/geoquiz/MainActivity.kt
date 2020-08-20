@@ -17,6 +17,9 @@ class MainActivity : AppCompatActivity() {
     private  lateinit var questionTextView: TextView
     private lateinit var nextButton: ImageButton
     private lateinit var prevButton: ImageButton
+    private var trueButtonClicked:Boolean = false
+    private var falseButtonClicked:Boolean = false
+
 
 
     private val questionBank = listOf(
@@ -43,14 +46,24 @@ class MainActivity : AppCompatActivity() {
         nextButton = findViewById(R.id.next_button)
         prevButton = findViewById(R.id.previous_button)
 
+
         trueButton.setOnClickListener { view:View ->
             //Do something for True button
-           checkAnswer(true)
+            if(!trueButtonClicked){
+                checkAnswer(true)
+                trueButtonClicked = true
+                falseButtonClicked = true
+            }
          }
 
         falseButton.setOnClickListener { view:View->
             //Do something for false button
-            checkAnswer(false)
+            if (!falseButtonClicked){
+                checkAnswer(false)
+                falseButtonClicked =true
+                trueButtonClicked = true
+            }
+
          }
 
 
@@ -80,6 +93,7 @@ class MainActivity : AppCompatActivity() {
     private fun updateQuestion(){
         val questionTextResId = questionBank[currentIndex].txtResId
         questionTextView.setText(questionTextResId)
+        updateButtons()
     }
 
     private fun checkAnswer(userAnswer:Boolean){
@@ -91,6 +105,11 @@ class MainActivity : AppCompatActivity() {
             R.string.incorrect_toast
         }
         Toast.makeText(this,msgTextId,Toast.LENGTH_SHORT).show()
+    }
+
+    private fun updateButtons(){
+         trueButtonClicked = false
+         falseButtonClicked = false
     }
 
     override fun onStart() {
