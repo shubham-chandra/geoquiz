@@ -21,8 +21,16 @@ class MainActivity : AppCompatActivity() {
     private var falseButtonClicked:Boolean = false
 
 
+    private var quesionAnswered = arrayListOf<Int>(
+        0,
+        0,
+        0,
+        0,
+        0
+    )
+    private var score = 0
 
-    private val questionBank = listOf(
+    private var questionBank = listOf(
         Question(R.string.question_oceans,true),
         Question(R.string.question_mideast,false),
         Question(R.string.question_africa,false),
@@ -53,6 +61,9 @@ class MainActivity : AppCompatActivity() {
                 checkAnswer(true)
                 trueButtonClicked = true
                 falseButtonClicked = true
+                checkScore()
+
+
             }
          }
 
@@ -62,6 +73,7 @@ class MainActivity : AppCompatActivity() {
                 checkAnswer(false)
                 falseButtonClicked =true
                 trueButtonClicked = true
+                checkScore()
             }
 
          }
@@ -90,6 +102,20 @@ class MainActivity : AppCompatActivity() {
         updateQuestion()
     }
 
+    private fun checkScore(){
+        if(quesionAnswered.sum()==quesionAnswered.size){
+            val percentage = (score/quesionAnswered.size.toDouble())*100
+            val msg = percentage.toString()
+            Toast.makeText(this,"Score is $msg%",Toast.LENGTH_SHORT).show()
+            score = 0
+            quesionAnswered = arrayListOf<Int>( 0,
+                0,
+                0,
+                0,
+                0)
+        }
+    }
+
     private fun updateQuestion(){
         val questionTextResId = questionBank[currentIndex].txtResId
         questionTextView.setText(questionTextResId)
@@ -99,11 +125,14 @@ class MainActivity : AppCompatActivity() {
     private fun checkAnswer(userAnswer:Boolean){
         val correctAnswer = questionBank[currentIndex].answer
 
-        val msgTextId = if (userAnswer == correctAnswer){
-            R.string.correct_toast
+        val msgTextId:Int;
+        if (userAnswer == correctAnswer){
+            msgTextId = R.string.correct_toast
+            score += 1
         }else{
-            R.string.incorrect_toast
+            msgTextId = R.string.incorrect_toast
         }
+        quesionAnswered[currentIndex]=1
         Toast.makeText(this,msgTextId,Toast.LENGTH_SHORT).show()
     }
 
