@@ -35,7 +35,8 @@ class MainActivity : AppCompatActivity() {
     private var score = 0
 
     private val quizViewModel:QuizViewModel by lazy{
-        ViewModelProviders.of(this).get(QuizViewModel::class.java)
+        //ViewModelProviders.of(this).get(QuizViewModel::class.java)
+        ViewModelProvider(this).get(QuizViewModel::class.java)
     }
 
 
